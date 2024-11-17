@@ -1,0 +1,23 @@
+{
+  "name": "openaches",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --watch src/. --ext ts --exec 'tsx src/server.ts'"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7",
+    "pino": "^9.5.0",
+    "pino-http": "^10.3.0",
+    "pino-pretty": "^13.0.0"
+  }
+}
