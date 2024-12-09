@@ -3,9 +3,29 @@ const ROUTES = {
   api: {
     global_root: "/api",
     local_root: "/",
-    countries: {
-      global: "/api/v1/countries",
-      local: "/v1/countries",
+    hdx: {
+      global_root: "/api/v1/hdx",
+      local_root: "/v1/hdx",
+      countries: {
+        global_root: "/api/v1/hdx/countries",
+        local_root: "/v1/hdx/countries",
+      },
+      cds: {
+        global_root: "/api/v1/hdx/cds",
+        local_root: "/v1/hdx/cds",
+      },
+      fp: {
+        global_root: "/api/v1/hdx/fp",
+        local_root: "/v1/hdx/fp",
+      },
+    },
+    manifold: {
+      global_root: "/api/v1/manifold",
+      local_root: "/v1/manifold",
+      hxl: {
+        global_root: "/api/v1/manifold/hxl",
+        local_root: "/v1/manifold/hxl",
+      },
     },
   },
 };

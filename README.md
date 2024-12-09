@@ -1,6 +1,12 @@
 # OpenACHES
 
-A centralized, locally hosted server for accessing all data relevant to humanitarian and societal events.
+**_Open, Accessible, Centralized Humanitarian Environmental System_**
+
+A centralized, locally hostable syntactical-proxy server for accessing all data relevant to humanitarian and societal events.
+
+Currently supports these following providers
+
+- [United Nations Office for the Coordination of Humanitarian Affairs, Humanitarian Data Exchange](https://data.humdata.org) (Support for HXL tags will be integrated)
 
 ## Installation
 
@@ -27,7 +33,9 @@ PORT=[INPUT PORT HERE]
 HDX_IDENT=[INPUT HDX IDENTIFIER HERE]
 ```
 
-Note: Visit the [Humanitarian Data Exchange HAPI Site](https://data.humdata.org/hapi) to generate an application identifier since one won't be provided with the server due to security concerns.
+### API Keys Required?
+
+Humanitarian Data Exchange - Yes, visit the [Humanitarian Data Exchange HAPI OpenAPI Site](https://data.humdata.org/hapi)
 
 ## Stack
 
@@ -36,11 +44,13 @@ Note: Visit the [Humanitarian Data Exchange HAPI Site](https://data.humdata.org/
 
 ## About
 
-This basically allows organizations to host this server which can allow them to quickly and quite easily pull data from, governmental and open third-party, data providers ascertaining to current global humanitarian events and crises.
+This basically allows involved third-parties to host a server that can allow them to quickly and quite easily pull data from, governmental and other open third-party, data providers ascertaining to current global humanitarian events, crises and archived data for further research into potential solutions, or preventative indicators.
 
-Organizations tend to implement APIs with a ton of routes that require encoding tokens, putting in tons of query parameters, etc.
+Humanitarian organizations tend to implement APIs with a ton of routes that require encoding tokens, putting in tons of query parameters, etc.
 
-This project aims to ease that by providing simple and easy-to-remember API routes with very few query parameters, along with doing JSON data manipulation e.g.
+This project aims to ease that by providing simple and easy-to-remember API routes with very few query parameters, along with doing JSON data manipulation to aggregate all results partaining to a specific platform
+
+### Example
 
 One API route on OpenACHES -> Multiple API routes on HDX
 
@@ -64,4 +74,15 @@ https://hapi.humdata.org/api/v1/metadata/admin2?output_format=json&app_identifie
 
 ## License
 
-### Copyright (C) 2024 1982FenceHopper, All Rights Reserved Under GNU AGPLv3, see `LICENSE` for more details
+```
+Copyright (C) 2024 1982FenceHopper
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+```
