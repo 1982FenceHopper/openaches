@@ -15,7 +15,7 @@ export async function ManifoldStatus() {
 }
 
 export async function ManifoldDataByFile(file: string, column: string) {
-  const filtered = await fetch(`http://127.0.0.1:4170/manifold`, {
+  const filtered = await fetch(`http://127.0.0.1:15411/manifold`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export async function ManifoldDataByResource(
 
   const data_loc = data_dl.data[0].download_url;
 
-  const filtered = await fetch(`http://127.0.0.1:4170/manifold`, {
+  const filtered = await fetch(`http://127.0.0.1:15411/manifold`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
