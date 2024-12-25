@@ -22,10 +22,6 @@ const ROUTES = {
     manifold: {
       global_root: "/api/v1/manifold",
       local_root: "/v1/manifold",
-      status: {
-        global_root: "/api/v1/manifold/status",
-        local_root: "/v1/manifold/status",
-      },
       hxl: {
         global_root: "/api/v1/manifold/hxl",
         local_root: "/v1/manifold/hxl",

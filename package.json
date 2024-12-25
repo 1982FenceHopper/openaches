@@ -3,7 +3,7 @@
   "module": "src/server.ts",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"nodemon --watch src/. --ext ts --exec 'tsx src/server.ts'\" \"fastapi dev python/server.py --port 4170\""
+    "dev": "nodemon --watch src/. --ext ts --exec 'tsx src/server.ts'"
   },
   "devDependencies": {
     "@types/bun": "latest"
