@@ -10,33 +10,71 @@ Currently supports these following providers
 
 ## Installation
 
+### API Keys
+
+Humanitarian Data Exchange (HDX) - Visit the [Humanitarian Data Exchange HAPI OpenAPI Site](https://data.humdata.org/hapi)
+
+### Environment Variables
+
+- `PORT` - The port for the server to run on
+- `HDX_IDENT` - Your HDX identifier, acts as the API key basically
+
 ### Quickest And Easiest: Docker
 
-**A docker container will soon be available in the future for quick deployments**
-
-### Most customizable: Local Binary
-
-Clone the github repository
+Option 1: Command Line
 
 ```bash
-git clone https://github.com/1982FenceHopper/openaches
+$: docker run -d -e PORT=[PORT] -e HDX_IDENT="[HDX_IDENT]" -p [PORT]:[PORT] --name openaches 1982fencehopper/openaches:latest
+```
+
+Option 2: Docker Compose
+
+```yml
+services:
+  app:
+    image: 1982fencehopper/openaches:latest
+    container_name: openaches
+    restart: unless-stopped
+    ports:
+      - [PORT]:[PORT]
+    environment:
+      - PORT=[PORT]
+      - HDX_IDENT="[HDX_IDENT]"
+```
+
+### Most customizable: Local Running (requires `bun` and `python3.9`)
+
+Clone the github repository and change working directory
+
+```bash
+$: git clone https://github.com/1982FenceHopper/openaches
+```
+
+```bash
+$: cd openaches/
 ```
 
 Create an environment file and fill in required values.
 
-```sh
-touch .env
+```bash
+$: touch .env
 ```
 
 ```
-PORT=[INPUT PORT HERE]
-HDX_IDENT=[INPUT HDX IDENTIFIER HERE]
+PORT=[PORT]
+HDX_IDENT=[HDX_IDENT]
+```
+
+Run the server
+
+```bash
+$: bun run dev
 ```
 
 Query the server for available endpoints
 
 ```bash
-curl http://localhost:[PORT]/api/v1
+$: curl http://localhost:[PORT]/api/v1
 ```
 
 ```json
@@ -85,10 +123,6 @@ curl http://localhost:[PORT]/api/v1
   }
 }
 ```
-
-### API Keys Required?
-
-Humanitarian Data Exchange - Yes, visit the [Humanitarian Data Exchange HAPI OpenAPI Site](https://data.humdata.org/hapi)
 
 ## Stack
 
