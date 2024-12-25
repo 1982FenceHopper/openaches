@@ -173,3 +173,6 @@ dist
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# Ignore huge python conda env folder
+python/env
