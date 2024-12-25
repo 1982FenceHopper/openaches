@@ -1,0 +1,4 @@
+date,admin1,admin2,market,latitude,longitude,category,commodity,unit,priceflag,pricetype,currency,price,usdprice
+#date,#adm1+name,#adm2+name,#loc+market+name,#geo+lat,#geo+lon,#item+type,#item+name,#item+unit,#item+price+flag,#item+price+type,#currency,#value,#value+usd
+2010-01-15,,,Kombai,,,cereals and tubers,Maize,KG,actual,Retail,USD,0.26,0.2571
+2010-01-15,,,Mandava,,,cereals and tubers,Maize,KG,actual,Retail,USD,0.26,0.2571

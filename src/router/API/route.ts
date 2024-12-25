@@ -1,14 +1,17 @@
 import express from "express";
 import { UNOCHA_alpha3_to_str } from "../../objects/OCHA_Codes";
-import { HDXAsylumData, HDXCountries, HDXFoodPrice } from "../../utils/hdx";
+import { HDXAsylumData, HDXCountries, HDXFoodPrice } from "../../utils/hdx/hdx";
+import {
+  ManifoldDataByFile,
+  ManifoldDataByResource,
+  ManifoldStatus,
+} from "../../utils/manifold/manifold";
 import {
   ExpressErrorResponse,
   ExpressSuccessResponse,
 } from "../../utils/response/ResponseUtils";
 import ROUTES from "../routes";
-import MulterSingleton from "../../utils/multer/MulterSingleton";
 
-const mult = MulterSingleton.getInstance();
 const APIController = express.Router();
 
 //* Root API Endpoint
@@ -47,12 +50,21 @@ APIController.get(
             },
           },
         },
-        palestine: {
+        manifold: {
           description:
-            "Return current Palestine Conflict death toll based on web search",
-          caution:
-            "This endpoint returns an arbitrary value that should not be used in any data-critical applications",
-          route: "/api/v1/palestine",
+            "Allows manipulation of various CSV data (e.g. data-prep, ML)",
+          route: "/api/v1/manifold",
+          subroutes: {
+            status: {
+              description: "Returns status of Manifolding Server",
+              route: "/api/v1/manifold/status",
+            },
+            hxl: {
+              description:
+                "Manipulate data via HXL tags, query GET /api/v1/manifold for required params",
+              route: "/api/v1/manifold/hxl",
+            },
+          },
         },
       },
     });
@@ -224,29 +236,106 @@ APIController.get(ROUTES.api.manifold.local_root, (req, res, next) => {
   res.status(200).send({
     status: 200,
     description:
-      "This and all child endpoints are able to manipulate any HXL-Supported data via the use of HXL tags for easier dataset creation (e.g. AI Training, Time-Series Analysis)",
+      "This and all child endpoints are able to manipulate any HXL-Supported data via the use of HXL tags for easier dataset creation (e.g. AI Training, Time-Series Analysis), note that this endpoint only supports CSV at the moment",
     endpoints: {
       hxl: {
-        accepts: "multipart/form-data",
         description:
-          "Manipulate given data via given HXL tags, supports year range selection and column filtering",
-        params: {
-          ascending:
-            "Ascending or descending order where '+' is ascending and '-' is descending (options: year+, year-, column+, column-) (optional)",
-          year: "Year range to filter by (optional)",
-          column: "Column to filter by (required) (Needs HXL tags)",
-          file: "The CSV file to manipulate (required)",
+          "Manipulate given CSV data via given HXL tags, supports year range selection and column filtering",
+        q_params: {
+          file: "Link to CSV dataset to manipulate (required if resource ID not given)",
+          resource_id:
+            "Resource ID of HDX dataset to manipulate (required if file not given, HDX only)",
+          tags: "Tags to filter by (required) (Needs HXL tags, comma separated)",
         },
       },
     },
   });
 });
 
+//? @GET: HXL Manifold Status
+APIController.get(
+  ROUTES.api.manifold.status.local_root,
+  async (req, res, next) => {
+    const { result, error } = await ManifoldStatus();
+
+    if (error) {
+      res.log.error(`[OVERSEER]: ${error}`);
+      ExpressErrorResponse(res, `${error}: ${result}`, 500);
+    } else {
+      ExpressSuccessResponse(res, result);
+    }
+  }
+);
+
 //? @GET: HXL Manipulation Endpoint
-APIController.post(
+APIController.get(
   ROUTES.api.manifold.hxl.local_root,
-  mult.single("file"),
-  async (req, res, next) => {}
+  async (req, res, next) => {
+    const { file, resource_id, tags } = req.query;
+
+    if (!file && !resource_id) {
+      ExpressErrorResponse(
+        res,
+        "No file or resource ID provided in query parameter by client",
+        400
+      );
+      return;
+    }
+
+    if (!tags) {
+      ExpressErrorResponse(
+        res,
+        "No column tags provided in query parameter by client",
+        400
+      );
+      return;
+    }
+
+    if (file) {
+      try {
+        const { result, error } = await ManifoldDataByFile(
+          file as string,
+          tags as string
+        );
+
+        if (error) {
+          ExpressErrorResponse(res, `${error}: ${result}`, 500);
+        } else {
+          res.contentType("text/csv");
+          res.setHeader(
+            "Content-Disposition",
+            "attachment; filename=folded.csv"
+          );
+          res.status(200).send(result);
+        }
+      } catch (err: any) {
+        ExpressErrorResponse(res, `${err}`);
+      }
+    }
+
+    if (resource_id) {
+      try {
+        const { result, error } = await ManifoldDataByResource(
+          process.env.HDX_IDENT,
+          resource_id as string,
+          tags as string
+        );
+
+        if (error) {
+          ExpressErrorResponse(res, `${error}: ${result}`, 500);
+        } else {
+          res.contentType("text/csv");
+          res.setHeader(
+            "Content-Disposition",
+            "attachment; filename=folded.csv"
+          );
+          res.status(200).send(result);
+        }
+      } catch (err: any) {
+        ExpressErrorResponse(res, `${err}`);
+      }
+    }
+  }
 );
 
 export default APIController;
