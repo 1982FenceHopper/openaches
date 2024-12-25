@@ -1,6 +1,6 @@
 import express from "express";
 import ROUTES from "../routes";
-import { HDXStatus } from "../../utils/hdx";
+import { HDXStatus } from "../../utils/hdx/hdx";
 const RootController = express.Router();
 
 RootController.get(ROUTES.lander, async (req, res, next) => {
