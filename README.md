@@ -6,7 +6,7 @@ A centralized, locally hostable syntactical-proxy server for accessing all data 
 
 Currently supports these following providers
 
-- [United Nations Office for the Coordination of Humanitarian Affairs, Humanitarian Data Exchange](https://data.humdata.org) (Support for HXL tags will be integrated)
+- [United Nations Office for the Coordination of Humanitarian Affairs, Humanitarian Data Exchange](https://data.humdata.org) (HXL Supported)
 
 ## Installation
 
@@ -33,13 +33,68 @@ PORT=[INPUT PORT HERE]
 HDX_IDENT=[INPUT HDX IDENTIFIER HERE]
 ```
 
+Query the server for available endpoints
+
+```bash
+curl http://localhost:[PORT]/api/v1
+```
+
+```json
+{
+  "status": 200,
+  "endpoints": {
+    "hdx": {
+      "description": "Data retrieval from the Humanitarian Data Exchange",
+      "countries": {
+        "description": "Return list of available countries",
+        "route": "/api/v1/countries",
+        "params": {
+          "index": "Number of results to skip, useful for pagination"
+        }
+      },
+      "cds": {
+        "description": "Return country specific details",
+        "route": "/api/v1/cds",
+        "params": {
+          "country": "ISO3166-1 Alpha-3 country code to return details about",
+          "index": "Number of results to skip in each subattribute of details, useful for subattr. pagination"
+        }
+      },
+      "fp": {
+        "description": "Returns country food pricing data, result is given as a CSV",
+        "route": "/api/v1/fp",
+        "params": {
+          "country": "ISO3166-1 Alpha-3 country code to return details about"
+        }
+      }
+    },
+    "manifold": {
+      "description": "Allows manipulation of various CSV data (e.g. data-prep, ML)",
+      "route": "/api/v1/manifold",
+      "subroutes": {
+        "status": {
+          "description": "Returns status of Manifolding Server",
+          "route": "/api/v1/manifold/status"
+        },
+        "hxl": {
+          "description": "Manipulate data via HXL tags, query GET /api/v1/manifold for required params",
+          "route": "/api/v1/manifold/hxl"
+        }
+      }
+    }
+  }
+}
+```
+
 ### API Keys Required?
 
 Humanitarian Data Exchange - Yes, visit the [Humanitarian Data Exchange HAPI OpenAPI Site](https://data.humdata.org/hapi)
 
 ## Stack
 
-- Express.js
+- Express.js (TypeScript)
+- FastAPI (Python)
+- pandas (Python)
 - thats pretty much it
 
 ## About
